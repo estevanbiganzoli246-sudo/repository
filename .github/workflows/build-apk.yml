@@ -28,9 +28,10 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Accept Android licenses
+      - name: Accept Android licenses and install SDK platform 36
         run: |
           yes | sdkmanager --licenses || true
+          yes | sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
 
       - name: Install Dependencies
         run: npm install
