@@ -1,0 +1,148 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile data linked to Authentication UID",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "photoURL": { "type": "string", "maxLength": 1000 },
+        "username": { "type": "string", "maxLength": 60 },
+        "country": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 80 },
+        "bio": { "type": "string", "maxLength": 300 },
+        "totalRuns": { "type": "number" },
+        "totalDistanceKm": { "type": "number" },
+        "totalDurationSec": { "type": "number" },
+        "bestPaceSecPerKm": { "type": "number" },
+        "longestDistanceKm": { "type": "number" },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["uid", "email", "displayName", "createdAt"]
+    },
+    "Run": {
+      "title": "Run",
+      "description": "Real recorded running activity with GPS points, duration, and metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userDisplayName": { "type": "string", "maxLength": 120 },
+        "userPhotoURL": { "type": "string", "maxLength": 1000 },
+        "title": { "type": "string", "maxLength": 120 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "distanceKm": { "type": "number" },
+        "durationSeconds": { "type": "number" },
+        "avgPaceSecondsPerKm": { "type": "number" },
+        "avgSpeedKmh": { "type": "number" },
+        "maxSpeedKmh": { "type": "number" },
+        "routePoints": { "type": "array" },
+        "splits": { "type": "array" },
+        "startedAt": { "type": "string", "maxLength": 64 },
+        "endedAt": { "type": "string", "maxLength": 64 },
+        "isPublic": { "type": "boolean" },
+        "visibility": { "type": "string", "enum": ["public", "followers", "private"] },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "distanceKm", "durationSeconds", "startedAt", "endedAt"]
+    },
+    "CommunityPost": {
+      "title": "CommunityPost",
+      "description": "Social feed post with photo, running activity card, likes and comments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 120 },
+        "authorUsername": { "type": "string", "maxLength": 60 },
+        "authorPhotoURL": { "type": "string", "maxLength": 1000 },
+        "text": { "type": "string", "maxLength": 1000 },
+        "photoURL": { "type": "string" },
+        "location": { "type": "string", "maxLength": 120 },
+        "runActivity": { "type": "object" },
+        "visibility": { "type": "string", "enum": ["public", "followers", "private"] },
+        "likes": { "type": "array" },
+        "commentsCount": { "type": "number" },
+        "savedBy": { "type": "array" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "authorName", "createdAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment left on a community post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "postId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 120 },
+        "authorPhotoURL": { "type": "string", "maxLength": 1000 },
+        "text": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "postId", "userId", "authorName", "text", "createdAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Following relation between two runner profiles",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "followerId": { "type": "string", "maxLength": 128 },
+        "followingId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "followerId", "followingId", "createdAt"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "Activity notifications for social interactions and running achievements",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "recipientId": { "type": "string", "maxLength": 128 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 120 },
+        "senderPhotoURL": { "type": "string", "maxLength": 1000 },
+        "type": { "type": "string", "enum": ["like", "comment", "follow", "friend_run", "achievement"] },
+        "postId": { "type": "string", "maxLength": 128 },
+        "message": { "type": "string", "maxLength": 300 },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "recipientId", "senderId", "type", "message", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profiles indexed by authenticated user UID"
+    },
+    "/runs/{runId}": {
+      "schema": { "$ref": "#/entities/Run" },
+      "description": "Completed real runs recorded by users"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/CommunityPost" },
+      "description": "Social community feed posts"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Comments on community feed posts"
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Social graph connections between runners"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/AppNotification" },
+      "description": "Real-time user notifications"
+    }
+  }
+}

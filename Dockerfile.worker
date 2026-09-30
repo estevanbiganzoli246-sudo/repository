@@ -1,0 +1,35 @@
+# ==============================================================================
+# ClipForge Cloud Processing Worker - Standalone Worker Dockerfile
+# ==============================================================================
+FROM node:20-slim AS base
+
+# Install system dependencies: FFmpeg, curl, ca-certificates
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy dependency manifests
+COPY package.json package-lock.json* bun.lock* ./
+
+# Install npm dependencies
+RUN npm install --production=false
+
+# Copy application source code
+COPY . .
+
+# Build backend and worker bundle
+RUN npx esbuild server/worker.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/worker.cjs
+
+# Set environment defaults
+ENV NODE_ENV=production
+ENV TEMP_DIR=/app/temp_clips
+
+# Create temp storage directory
+RUN mkdir -p /app/temp_clips
+
+# Start the Cloud Worker
+CMD ["node", "dist/worker.cjs"]

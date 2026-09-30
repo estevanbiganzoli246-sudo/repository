@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a" />
+      <stop offset="100%" stop-color="#171717" />
+    </linearGradient>
+    <linearGradient id="runGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#10b981" stroke-width="8" stroke-opacity="0.25" stroke-dasharray="16 12" />
+  <!-- Runner Icon Symbol -->
+  <path d="M280 120a32 32 0 1 0-32-32 32 32 0 0 0 32 32zm-40 80l-45 105 50 25 25-55 45 40v90h35v-115l-40-40 15-55 35 30v55h35v-70l-55-50a30 30 0 0 0-35-5l-65 30z" fill="url(#runGrad)" />
+  <!-- GPS Pulse Wave -->
+  <circle cx="256" cy="256" r="40" fill="none" stroke="#10b981" stroke-width="4" stroke-opacity="0.4" />
+</svg>

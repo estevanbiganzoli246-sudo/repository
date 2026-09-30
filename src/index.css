@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Leaflet dark theme tile invert for nighttime/athletic look */
+.dark-tiles .leaflet-tile-pane {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+.leaflet-container {
+  font-family: inherit;
+  background-color: #0a0a0a !important;
+}
+
+/* Custom pulse for user GPS position marker */
+@keyframes gps-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 16px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.gps-marker-pulse {
+  animation: gps-pulse 2s infinite;
+}

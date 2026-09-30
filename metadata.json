@@ -1,0 +1,6 @@
+{
+  "name": "EcoWorld: Economic Simulator",
+  "description": "Un simulador económico expansible donde el jugador gestiona dinero, inventarios, propiedades y negocios en un mundo vivo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

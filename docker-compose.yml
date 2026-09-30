@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  # 1. Frontend & Web API Server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_URL=redis://redis:6379
+      - TEMP_DIR=/app/temp_clips
+    volumes:
+      - shared_clips:/app/temp_clips
+    depends_on:
+      - redis
+    restart: always
+
+  # 2. Independent Cloud Processing Worker (can be scaled: --scale worker=4)
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - TEMP_DIR=/app/temp_clips
+      - WORKER_CONCURRENCY=2
+    volumes:
+      - shared_clips:/app/temp_clips
+    depends_on:
+      - redis
+    restart: always
+
+  # 3. Redis Queue
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+
+volumes:
+  shared_clips:
+  redis_data:
